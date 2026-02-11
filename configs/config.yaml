@@ -1,0 +1,55 @@
+document_loader:
+  supported_extensions:
+    - ".pdf"
+  extract_images: false
+  preserve_page_numbers: true
+
+chunking:
+  strategy: "recursive"  # Options: fixed, sentence, recursive
+  chunk_size: 512
+  chunk_overlap: 50
+  separators:
+    - "\n\n"
+    - "\n"
+    - ". "
+    - " "
+    - ""
+
+embeddings:
+  model_name: "all-MiniLM-L6-v2"  # Local HuggingFace model
+  device: "cpu"  # or "cuda" if GPU available
+  batch_size: 32
+  normalize: true
+
+vector_store:
+  type: "chromadb"
+  persist_directory: "data/vectorstore"
+  collection_name: "documents"
+  distance_metric: "cosine"
+
+retrieval:
+  top_k: 10
+  rerank_top_k: 5
+  use_hybrid: true
+  bm25_weight: 0.3
+  semantic_weight: 0.7
+  reranker_model: "cross-encoder/ms-marco-MiniLM-L-6-v2"
+
+generation:
+  provider: "ollama"
+  model: "llama3"
+  temperature: 0.1
+  max_tokens: 1000
+  system_prompt: |
+    You are a helpful document assistant. Answer questions based ONLY on the 
+    provided context passages. For each claim in your answer, cite the source 
+    using [Source X, Page Y] format. If the answer is not found in the context, 
+    say "I could not find this information in the provided documents."
+
+  ollama:
+    base_url: "http://localhost:11434"
+    model: "llama3"
+
+conversation:
+  max_history: 5
+  include_history_in_prompt: true
