@@ -136,3 +136,8 @@ class VectorStore:
             return []
         names = set(m["document_name"] for m in results["metadatas"])
         return sorted(names)
+
+    def get_all(self):
+        """Get all documents, metadatas, and ids from the store."""
+        results = self.collection.get(include=["documents", "metadatas"])
+        return results

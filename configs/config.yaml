@@ -5,7 +5,7 @@ document_loader:
   preserve_page_numbers: true
 
 chunking:
-  strategy: "recursive"  # Options: fixed, sentence, recursive
+  strategy: "recursive"
   chunk_size: 512
   chunk_overlap: 50
   separators:
@@ -16,8 +16,8 @@ chunking:
     - ""
 
 embeddings:
-  model_name: "all-MiniLM-L6-v2"  # Local HuggingFace model
-  device: "cpu"  # or "cuda" if GPU available
+  model_name: "all-MiniLM-L6-v2"
+  device: "cpu"
   batch_size: 32
   normalize: true
 
@@ -36,8 +36,8 @@ retrieval:
   reranker_model: "cross-encoder/ms-marco-MiniLM-L-6-v2"
 
 generation:
-  provider: "ollama"
-  model: "llama3"
+  provider: "openai"
+  model: "gpt-4o-mini"
   temperature: 0.1
   max_tokens: 1000
   system_prompt: |
@@ -45,10 +45,6 @@ generation:
     provided context passages. For each claim in your answer, cite the source 
     using [Source X, Page Y] format. If the answer is not found in the context, 
     say "I could not find this information in the provided documents."
-
-  ollama:
-    base_url: "http://localhost:11434"
-    model: "llama3"
 
 conversation:
   max_history: 5
